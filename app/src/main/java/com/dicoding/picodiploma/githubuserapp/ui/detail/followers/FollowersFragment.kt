@@ -1,4 +1,4 @@
-package com.dicoding.picodiploma.githubuserapp.githubusers.followers
+package com.dicoding.picodiploma.githubuserapp.ui.detail.followers
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

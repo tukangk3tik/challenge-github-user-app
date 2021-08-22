@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:padding="16dp"
     android:id="@+id/activity_main"
-    tools:context=".MainActivity">
+    tools:context=".ui.home.MainActivity">
 
     <SearchView
         android:id="@+id/sv_searchUser"

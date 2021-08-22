@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import com.dicoding.picodiploma.githubuserapp.db.FavoritDatabase
+import com.dicoding.picodiploma.githubuserapp.ui.home.MainActivity
 
 class SplashActivity : AppCompatActivity() {
 

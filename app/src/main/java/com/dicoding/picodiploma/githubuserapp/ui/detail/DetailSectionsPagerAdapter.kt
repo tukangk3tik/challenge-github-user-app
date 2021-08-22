@@ -1,11 +1,11 @@
-package com.dicoding.picodiploma.githubuserapp.githubusers
+package com.dicoding.picodiploma.githubuserapp.ui.detail
 
 import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import com.dicoding.picodiploma.githubuserapp.githubusers.followers.FollowersFragment
-import com.dicoding.picodiploma.githubuserapp.githubusers.following.FollowingFragment
+import com.dicoding.picodiploma.githubuserapp.ui.detail.followers.FollowersFragment
+import com.dicoding.picodiploma.githubuserapp.ui.detail.following.FollowingFragment
 
 class DetailSectionsPagerAdapter (
         private val username: String,

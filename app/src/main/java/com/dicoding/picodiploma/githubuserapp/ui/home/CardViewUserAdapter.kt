@@ -1,4 +1,4 @@
-package com.dicoding.picodiploma.githubuserapp.githubusers
+package com.dicoding.picodiploma.githubuserapp.ui.home
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -13,14 +13,10 @@ import com.bumptech.glide.request.RequestOptions
 import com.dicoding.picodiploma.githubuserapp.R
 import com.dicoding.picodiploma.githubuserapp.models.detailuser.DetailUser
 import com.dicoding.picodiploma.githubuserapp.models.userlist.GithubUsers
-import com.dicoding.picodiploma.githubuserapp.db.FavoritDatabase
-import com.dicoding.picodiploma.githubuserapp.db.FavoritEntity
+import com.dicoding.picodiploma.githubuserapp.ui.detail.DetailUsersActivity
 import com.dicoding.picodiploma.githubuserapp.utils.ApiService
 import com.dicoding.picodiploma.githubuserapp.utils.RetroInstance
 import kotlinx.android.synthetic.main.item_github_users.view.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -30,6 +26,8 @@ class CardViewUserAdapter : RecyclerView.Adapter<CardViewUserAdapter.CardViewVie
 
     private val retrofit = RetroInstance.buildRetrofit()
     private val api = retrofit.create(ApiService::class.java)
+
+    var listener: UserListClickListener? = null
 
     inner class CardViewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         fun bind(userItems: GithubUsers) {
@@ -63,6 +61,11 @@ class CardViewUserAdapter : RecyclerView.Adapter<CardViewUserAdapter.CardViewVie
                         }
                     }
                 })
+
+                star_icon.setOnClickListener {
+                    d("CLICKED", "THIS IS CLICKED FROM CARDVIEW")
+                    listener?.onItemClicked(it, userItems)
+                }
 
                 //val tempFav = listOf(FavoritEntity(userItems.username, userItems.photoProfile))
                /* GlobalScope.launch (Dispatchers.IO) {
@@ -107,11 +110,7 @@ class CardViewUserAdapter : RecyclerView.Adapter<CardViewUserAdapter.CardViewVie
 
             //action on recycler click
             itemView.setOnClickListener {
-                //show toast on user click
-                Toast.makeText(itemView.context, userItems.username, Toast.LENGTH_SHORT).show()
-
                 val iDetailUsers = Intent(itemView.context, DetailUsersActivity::class.java)
-                d("test intent","result: $userItems")
                 iDetailUsers.putExtra(DetailUsersActivity.EXTRA_USERNAME, userItems)
                 itemView.context.startActivity(iDetailUsers)
             }
@@ -121,20 +120,26 @@ class CardViewUserAdapter : RecyclerView.Adapter<CardViewUserAdapter.CardViewVie
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): CardViewUserAdapter.CardViewViewHolder {
+    ): CardViewViewHolder {
         val view : View = LayoutInflater.from(parent.context).inflate(R.layout.item_github_users, parent, false)
         return CardViewViewHolder(view)
     }
 
     override fun getItemCount(): Int = listUsers.size
 
-    override fun onBindViewHolder(holder: CardViewUserAdapter.CardViewViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: CardViewViewHolder, position: Int) {
         holder.bind(listUsers[position])
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setData(items: ArrayList<GithubUsers>) {
         listUsers.clear()
         listUsers.addAll(items)
+        notifyDataSetChanged()
+    }
+
+    fun clearData() {
+        listUsers.clear()
     }
 }
 

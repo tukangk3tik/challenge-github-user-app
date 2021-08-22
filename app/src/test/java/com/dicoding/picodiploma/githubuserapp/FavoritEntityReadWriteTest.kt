@@ -5,14 +5,13 @@ import com.dicoding.picodiploma.githubuserapp.db.FavoritDao
 import com.dicoding.picodiploma.githubuserapp.db.FavoritDatabase
 import org.junit.Before
 import com.dicoding.picodiploma.githubuserapp.db.FavoritEntity
+import com.dicoding.picodiploma.githubuserapp.ui.home.MainActivity
 import org.junit.Assert.assertEquals
 import org.junit.After
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
-import org.mockito.junit.MockitoJUnitRunner
 import java.io.IOException
 
 //@RunWith(MockitoJUnitRunner::class)
@@ -46,7 +45,7 @@ class FavoritEntityReadWriteTest {
         val favorit = listOf(FavoritEntity("wakandaBP", "https://avatars0.githubusercontent.com/u/32126030?v=4"))
         `when`(favDao.insert(favorit)).thenReturn(null)
 
-        val favoritItem = favDao.findByUsername(testUsername)
+        val favoritItem = favDao.findOneByUsername(testUsername)
         assertEquals(favoritItem, favoritItem)
     }
 }

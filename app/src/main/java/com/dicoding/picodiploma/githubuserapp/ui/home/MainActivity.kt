@@ -1,4 +1,4 @@
-package com.dicoding.picodiploma.githubuserapp
+package com.dicoding.picodiploma.githubuserapp.ui.home
 
 import android.app.SearchManager
 import android.content.Context
@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -16,21 +17,24 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.dicoding.picodiploma.githubuserapp.R
 import com.dicoding.picodiploma.githubuserapp.databinding.ActivityMainBinding
-import com.dicoding.picodiploma.githubuserapp.favorit.FavoritActivity
-import com.dicoding.picodiploma.githubuserapp.githubusers.CardViewUserAdapter
-import com.dicoding.picodiploma.githubuserapp.githubusers.UserListResource
-import com.dicoding.picodiploma.githubuserapp.githubusers.ListUserViewModel
+import com.dicoding.picodiploma.githubuserapp.db.FavoritEntity
+import com.dicoding.picodiploma.githubuserapp.models.userlist.GithubUsers
+import com.dicoding.picodiploma.githubuserapp.ui.favorit.FavoritActivity
+import com.dicoding.picodiploma.githubuserapp.ui.favorit.FavoritViewModel
+import com.dicoding.picodiploma.githubuserapp.utils.Resource
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.*
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), UserListClickListener {
 
     private var doubleBackToExitPressedOnce : Boolean = false
 
     private lateinit var activityMainBinding: ActivityMainBinding
     private val listUserViewModel : ListUserViewModel by viewModels()
+    private val favoritViewModel : FavoritViewModel by viewModels()
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
@@ -63,13 +67,14 @@ class MainActivity : AppCompatActivity() {
         })
 
         val adapter = CardViewUserAdapter()
+        adapter.listener = this //for listen click event from adapter
         activityMainBinding.rvUsers.layoutManager = LinearLayoutManager(this)
         activityMainBinding.rvUsers.adapter = adapter
 
         //observer
         listUserViewModel.getListUsers().observe(this, { response ->
             when(response) {
-                is UserListResource.Success -> {
+                is Resource.Success -> {
                     response.data?.let {
                         if (it.size == 0) {
                             activityMainBinding.txtWelcome.text = getString(R.string.cant_find_user)
@@ -81,7 +86,7 @@ class MainActivity : AppCompatActivity() {
                         showLoading(false)
                     }
                 }
-                is UserListResource.Error -> {
+                is Resource.Error -> {
                     response.message?.let {
                         Toast.makeText(applicationContext, it, Toast.LENGTH_SHORT).show()
                         activityMainBinding.txtWelcome.text = getString(R.string.cant_connect)
@@ -89,7 +94,10 @@ class MainActivity : AppCompatActivity() {
                         showLoading(false)
                     }
                 }
-                is UserListResource.Loading -> showLoading(true)
+                is Resource.Loading -> {
+                    adapter.clearData()
+                    showLoading(true)
+                }
             }
         })
     }
@@ -132,6 +140,16 @@ class MainActivity : AppCompatActivity() {
         } else {
             activityMainBinding.progressBar.visibility = View.GONE
         }
+    }
+
+    override fun onItemClicked(view: View, user: GithubUsers) {
+        val newUser = FavoritEntity(user.username, user.photoProfile)
+        favoritViewModel.insertFavorit(newUser)
+
+        Toast.makeText(this,
+            "${user.username} has been added to favorit",
+            Toast.LENGTH_SHORT)
+            .show()
     }
 
 }

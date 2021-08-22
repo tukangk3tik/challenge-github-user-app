@@ -23,5 +23,6 @@
 
     <string name="added_to_favorit">Added to favorit</string>
     <string name="remove_from_favorit">Remove from favorit</string>
+    <string name="label_there_is_no_favorit_data">There is no favorit data</string>
 
 </resources>

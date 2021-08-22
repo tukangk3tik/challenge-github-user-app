@@ -16,6 +16,6 @@ data class FavoritEntity (
     var avatar_url : String?,
 
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id_fav")
-    var id_fav : Long = 0
+    @ColumnInfo(name = "id")
+    var id : Long = 0
 ) : Parcelable

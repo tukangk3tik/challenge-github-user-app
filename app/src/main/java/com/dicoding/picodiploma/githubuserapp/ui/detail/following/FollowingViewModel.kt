@@ -1,4 +1,4 @@
-package com.dicoding.picodiploma.githubuserapp.githubusers.following
+package com.dicoding.picodiploma.githubuserapp.ui.detail.following
 
 import android.util.Log
 import androidx.lifecycle.LiveData

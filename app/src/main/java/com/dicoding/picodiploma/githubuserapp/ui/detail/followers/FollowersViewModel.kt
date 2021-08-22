@@ -1,4 +1,4 @@
-package com.dicoding.picodiploma.githubuserapp.githubusers.followers
+package com.dicoding.picodiploma.githubuserapp.ui.detail.followers
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -19,7 +19,6 @@ class FollowersViewModel(): ViewModel() {
                 call: Call<ArrayList<DataFollowers>>,
                 response: Response<ArrayList<DataFollowers>>
             ) {
-                //d("test", "Response: ${response.body().items}")
                 if (response.code() == 200) {
                     listFollowers.postValue(response.body())
                 }

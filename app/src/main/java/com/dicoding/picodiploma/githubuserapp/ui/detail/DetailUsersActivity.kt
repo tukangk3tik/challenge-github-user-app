@@ -1,4 +1,4 @@
-package com.dicoding.picodiploma.githubuserapp.githubusers
+package com.dicoding.picodiploma.githubuserapp.ui.detail
 
 import android.annotation.SuppressLint
 import android.content.Context

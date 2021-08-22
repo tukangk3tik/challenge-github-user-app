@@ -1,26 +1,26 @@
 package com.dicoding.picodiploma.githubuserapp.db
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FavoritDao {
     @Query("SELECT * FROM userfavorites")
-    fun getAll(): List<FavoritEntity>
+    fun getAll(): Flow<List<FavoritEntity>>
 
     @Insert(onConflict = REPLACE)
-    fun insert(favorit: List<FavoritEntity>)
+    suspend fun insert(favorit: FavoritEntity)
 
     @Delete
-    fun delete(favorit: FavoritEntity)
+    suspend fun delete(favorit: FavoritEntity)
 
-    @Query("UPDATE userfavorites SET username = :userName, avatar_url = :avatarUrl WHERE id_fav = :idFav")
-    fun update(idFav: Long, userName: String, avatarUrl: String)
+    @Query("UPDATE userfavorites SET username = :userName, avatar_url = :avatarUrl WHERE id = :id")
+    suspend fun update(id: Long, userName: String, avatarUrl: String)
 
-    @Query("SELECT * FROM userfavorites WHERE username LIKE :userName")
-    fun findByUsername(userName: String?): List<FavoritEntity>
+    @Query("SELECT * FROM userfavorites WHERE username = :userName")
+    suspend fun findOneByUsername(userName: String?): FavoritEntity?
 }
