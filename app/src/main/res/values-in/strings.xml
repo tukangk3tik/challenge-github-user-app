@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Github User\'s</string>
+    <string name="username">Nama Pengguna</string>
+    <string name="detail_repo">0 Repositori</string>
+    <string name="search_user_hint">Cari pengguna</string>
+    <string name="list_followers">Pengikut:</string>
+    <string name="list_repositories">Repositori:</string>
+    <string name="welcome">Selamat datang di Github User\'s</string>
+    <string name="cant_connect">Tidak dapat terhubung, silahkan coba lagi nanti.</string>
+    <string name="cant_find_user">Maaf, tetapi kami tidak dapat menemukan pengguna dengan nama pengguna itu</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="detail_name">Nama</string>
+    <string name="dont_following_anyone">Pengguna ini tidak mengikuti siapa pun.</string>
+    <string name="dont_have_followers">Pengguna ini tidak memiliki pengikut</string>
+
+    <string name="detail_user_toolbar_string">Detail Pengguna</string>
+    <string name="change_language_settings">Ubah Pengaturan Bahasa</string>
+    <string name="github_home_page">Ke beranda Github</string>
+
+    <string name="profile_photo_content_description">Foto Profil</string>
+    <string name="dot_between_alias_and_repo">Titik antara alias dan repo</string>
+
+    <string name="added_to_favorit">Ditambahkan ke favorit</string>
+    <string name="remove_from_favorit">Dihapuskan dari favorit</string>
+
+</resources>

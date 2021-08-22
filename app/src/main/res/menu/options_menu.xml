@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/go_to_favorit"
+        android:enabled="true"
+        android:title="Favorit"
+        android:visible="true"
+        />
+
+    <item
+        android:id="@+id/go_to_github"
+        android:enabled="true"
+        android:title="@string/github_home_page"
+        android:visible="true"
+        />
+
+    <item
+        android:id="@+id/change_language"
+        android:enabled="true"
+        android:title="@string/change_language_settings"
+        android:visible="true"
+        />
+
+</menu>
