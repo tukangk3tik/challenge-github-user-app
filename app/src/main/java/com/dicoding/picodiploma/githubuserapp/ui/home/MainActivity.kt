@@ -23,6 +23,7 @@ import com.dicoding.picodiploma.githubuserapp.db.FavoritEntity
 import com.dicoding.picodiploma.githubuserapp.models.userlist.GithubUsers
 import com.dicoding.picodiploma.githubuserapp.ui.favorit.FavoritActivity
 import com.dicoding.picodiploma.githubuserapp.ui.favorit.FavoritViewModel
+import com.dicoding.picodiploma.githubuserapp.ui.reminder.ReminderActivity
 import com.dicoding.picodiploma.githubuserapp.utils.Resource
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.*
@@ -107,6 +108,11 @@ class MainActivity : AppCompatActivity(), UserListClickListener {
             R.id.go_to_favorit -> {
                 val viewFav = Intent(this@MainActivity, FavoritActivity::class.java)
                 startActivity(viewFav)
+            }
+
+            R.id.go_to_reminder -> {
+                val reminder = Intent(this@MainActivity, ReminderActivity::class.java)
+                startActivity(reminder)
             }
 
             R.id.go_to_github -> {

@@ -1,17 +1,18 @@
 package com.dicoding.picodiploma.githubuserapp.ui.favorit
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log.d
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dicoding.picodiploma.githubuserapp.R
 import com.dicoding.picodiploma.githubuserapp.databinding.ActivityFavoritBinding
 import com.dicoding.picodiploma.githubuserapp.db.FavoritEntity
+import com.dicoding.picodiploma.githubuserapp.models.userlist.GithubUsers
+import com.dicoding.picodiploma.githubuserapp.ui.detail.DetailUsersActivity
 
 class FavoritActivity : AppCompatActivity(), FavoritListClickListener {
 
@@ -58,12 +59,30 @@ class FavoritActivity : AppCompatActivity(), FavoritListClickListener {
         }
     }
 
-    override fun onItemClicked(view: View, favorit: FavoritEntity) {
-        Toast.makeText(this,
-            "${favorit.username} has been removed to favorit",
-            Toast.LENGTH_SHORT)
-            .show()
+    override fun onDeleteClicked(view: View, favorit: FavoritEntity) {
+        val alertDialogBuilder = AlertDialog.Builder(this)
+        alertDialogBuilder.setTitle("Delete User")
+        alertDialogBuilder
+            .setMessage("Are you sure delete ${favorit.username} from favorit?")
+            .setCancelable(false)
+            .setPositiveButton("Confirm") { dialog, id ->
+                favoritViewModel.deleteFavorit(favorit)
 
-        favoritViewModel.deleteFavorit(favorit)
+                Toast.makeText(this,
+                    "${favorit.username} has been removed to favorit",
+                    Toast.LENGTH_SHORT)
+                    .show()
+            }
+            .setNegativeButton("Cancel") { dialog, id -> dialog.cancel() }
+
+        val alertDialog = alertDialogBuilder.create()
+        alertDialog.show()
+    }
+
+    override fun onItemClicked(view: View, favorit: FavoritEntity) {
+        val user = GithubUsers(favorit.username, favorit.avatar_url)
+        val iDetailUsers = Intent(this, DetailUsersActivity::class.java)
+        iDetailUsers.putExtra(DetailUsersActivity.EXTRA_USERNAME, user)
+        startActivity(iDetailUsers)
     }
 }

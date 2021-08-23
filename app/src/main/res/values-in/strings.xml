@@ -24,5 +24,23 @@
 
     <string name="added_to_favorit">Ditambahkan ke favorit</string>
     <string name="remove_from_favorit">Dihapuskan dari favorit</string>
+    <string name="label_there_is_no_favorit_data">Tidak ada data favorit</string>
 
+    <string name="repeating_reminder">Alarm Pengingat Berulang berhasil diatur</string>
+    <string name="onetime_reminder">Alarm Pengingat berhasil diatur</string>
+
+    <string name="label_reminder">Pengingat</string>
+    <string name="alarm_reminder_for">Atur alarm untuk pengingat</string>
+    <string name="label_waktu_reminder">00:00</string>
+    <string name="set_alarm_time">Atur waktu alarm</string>
+    <string name="set_alarm_active">Atur hidup/mati alarm</string>
+
+    <string name="favorit_user">Pengguna Favorit</string>
+    <string name="reminder">Pengingat</string>
+    <string name="reminder_msg">Saatnya untuk Github User\'s App</string>
+    <string name="alarm_disable_msg">Reminder dinonaktifkan</string>
+    <string name="alarm_enable_msg">Reminder diaktifkan</string>
+
+    <string name="turn_on_alarm">Hidupkan alarm</string>
+    <string name="turn_off_alarm">Matikan alarm</string>
 </resources>

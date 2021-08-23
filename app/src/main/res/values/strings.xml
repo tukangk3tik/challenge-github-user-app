@@ -25,4 +25,19 @@
     <string name="remove_from_favorit">Remove from favorit</string>
     <string name="label_there_is_no_favorit_data">There is no favorit data</string>
 
+    <string name="repeating_reminder">Repeating Reminder Alarm has set</string>
+    <string name="onetime_reminder">Reminder Alarm has set</string>
+    <string name="label_reminder">Reminder</string>
+    <string name="alarm_reminder_for">Set alarm for reminder</string>
+    <string name="label_waktu_reminder">00:00</string>
+    <string name="set_alarm_time">Set alarm time</string>
+    <string name="set_alarm_active">Set alarm active</string>
+    <string name="favorit_user">Favorit User\'s</string>
+    <string name="reminder">Reminder</string>
+    <string name="reminder_msg">Time for Github User\'s App</string>
+    <string name="alarm_disable_msg">Reminder turned off</string>
+    <string name="alarm_enable_msg">Reminder turned on</string>
+    <string name="turn_on_alarm">Turn on alarm</string>
+    <string name="turn_off_alarm">Turn off alarm</string>
+
 </resources>

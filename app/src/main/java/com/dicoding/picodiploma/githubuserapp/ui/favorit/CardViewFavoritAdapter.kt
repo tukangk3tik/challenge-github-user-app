@@ -1,17 +1,12 @@
 package com.dicoding.picodiploma.githubuserapp.ui.favorit
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.dicoding.picodiploma.githubuserapp.R
 import com.dicoding.picodiploma.githubuserapp.databinding.ItemFavoritBinding
-import com.dicoding.picodiploma.githubuserapp.databinding.ItemGithubUsersBinding
 import com.dicoding.picodiploma.githubuserapp.db.FavoritEntity
-import kotlinx.android.synthetic.main.item_followers_following.view.*
 
 class CardViewFavoritAdapter : RecyclerView.Adapter<CardViewFavoritAdapter.ViewHolder> () {
 
@@ -29,6 +24,10 @@ class CardViewFavoritAdapter : RecyclerView.Adapter<CardViewFavoritAdapter.ViewH
                     .into(imgPhoto)
 
                 deleteFavorit.setOnClickListener {
+                    listener?.onDeleteClicked(it, favItem)
+                }
+
+                itemView.setOnClickListener {
                     listener?.onItemClicked(it, favItem)
                 }
             }

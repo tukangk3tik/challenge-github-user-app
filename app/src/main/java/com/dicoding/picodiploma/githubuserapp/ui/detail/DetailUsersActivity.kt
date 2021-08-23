@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.text.method.LinkMovementMethod
+import android.util.Log.d
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
