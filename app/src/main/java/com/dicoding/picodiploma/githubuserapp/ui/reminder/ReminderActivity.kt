@@ -3,6 +3,7 @@ package com.dicoding.picodiploma.githubuserapp.ui.reminder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import com.dicoding.picodiploma.githubuserapp.R
 import com.dicoding.picodiploma.githubuserapp.databinding.ActivityReminderBinding
 import com.dicoding.picodiploma.githubuserapp.utils.alarm.AlarmReceiver
@@ -63,10 +64,13 @@ class ReminderActivity : AppCompatActivity(), View.OnClickListener, TimePickerFr
                     alarmReceiver.setRepeatingAlarm(this, AlarmReceiver.APP_NAME, time)
 
                     binding?.tvStatusAlarm?.text = resources.getString(R.string.turn_off_alarm)
+                    Toast.makeText(this, resources.getString(R.string.alarm_enable_msg), Toast.LENGTH_SHORT).show()
                 } else {
                     alarmStateManager.turnOffAlarm()
                     alarmReceiver.cancelAlarm(this)
 
+                    val message = resources.getString(R.string.alarm_disable_msg)
+                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
                     binding?.tvStatusAlarm?.text = resources.getString(R.string.turn_on_alarm)
                 }
             }
@@ -80,6 +84,16 @@ class ReminderActivity : AppCompatActivity(), View.OnClickListener, TimePickerFr
 
         val dateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
         binding?.timeReminder?.text = dateFormat.format(calendar.time)
+
+        if (alarmStateManager.getAlarmDetail().status){
+            val time = dateFormat.format(calendar.time).toString()
+
+            alarmReceiver.cancelAlarm(this)
+            alarmStateManager.setAlarm(time)
+            alarmReceiver.setRepeatingAlarm(this, AlarmReceiver.APP_NAME, time)
+
+            Toast.makeText(this, resources.getString(R.string.alarm_set), Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onDestroy() {

@@ -91,8 +91,6 @@ class AlarmReceiver: BroadcastReceiver() {
 
         val pendingIntent = PendingIntent.getBroadcast(context, ID_REPEATING, intent, 0)
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)
-
-        Toast.makeText(context, context.resources.getString(R.string.alarm_enable_msg), Toast.LENGTH_SHORT).show()
     }
 
     fun cancelAlarm(context: Context) {
@@ -105,9 +103,6 @@ class AlarmReceiver: BroadcastReceiver() {
         pendingIntent.cancel()
 
         alarmManager.cancel(pendingIntent)
-
-        val message = context.resources.getString(R.string.alarm_disable_msg)
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
     fun isAlarmSet(context: Context): Boolean {
