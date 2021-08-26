@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">favoritConstumer</string>
+    <string name="username">Users Name</string>
+    <string name="profile_photo_content_description">Profile photo</string>
+    <string name="label_there_is_no_favorit_data">There is no favorit data</string>
+
+</resources>
