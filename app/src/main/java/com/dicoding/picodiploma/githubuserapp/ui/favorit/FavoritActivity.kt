@@ -2,7 +2,6 @@ package com.dicoding.picodiploma.githubuserapp.ui.favorit
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log.d
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels

@@ -2,11 +2,9 @@ package com.dicoding.picodiploma.githubuserapp.ui.home
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -41,7 +39,7 @@ class CardViewUserAdapter : RecyclerView.Adapter<CardViewUserAdapter.CardViewVie
                     .into(img_users_photo)
 
                 //get number of followers and repositories from profile
-                api.profileUser(userItems.username).enqueue(object : Callback<DetailUser> {
+                api.profileUserCardView(userItems.username).enqueue(object : Callback<DetailUser> {
                     override fun onFailure(call: Call<DetailUser>, t: Throwable) {
                         //d("load repo", "onFailure $t")
                     }
@@ -63,49 +61,8 @@ class CardViewUserAdapter : RecyclerView.Adapter<CardViewUserAdapter.CardViewVie
                 })
 
                 star_icon.setOnClickListener {
-                    d("CLICKED", "THIS IS CLICKED FROM CARDVIEW")
                     listener?.onItemClicked(it, userItems)
                 }
-
-                //val tempFav = listOf(FavoritEntity(userItems.username, userItems.photoProfile))
-               /* GlobalScope.launch (Dispatchers.IO) {
-                    val db = FavoritDatabase.getInstance(itemView.context).getFavoritDao()
-                    val result = db.findByUsername(userItems.username)
-
-                    var statusText: String = ""
-                    var status: Int = 0
-
-                    if (result.size > 0) {
-                        star_icon.setImageResource(R.drawable.ic_star_yellow_30)
-                        status = 1
-                    } else {
-                        star_icon.setImageResource(R.drawable.ic_star_border_30)
-                        status = 0
-                    }
-
-                    //action on star click
-                    star_icon.setOnClickListener {
-                        when (status){
-                            0 -> {
-                                statusText = resources.getString(R.string.added_to_favorit)
-                                star_icon.setImageResource(R.drawable.ic_star_yellow_30)
-                                this.launch (Dispatchers.IO) {
-                                    db.insert(tempFav)
-                                }
-                            }
-
-                            1 -> {
-                                statusText = resources.getString(R.string.remove_from_favorit)
-                                star_icon.setImageResource(R.drawable.ic_star_border_30)
-                                this.launch {
-                                    db.delete(tempFav[0])
-                                }
-                            }
-                        }
-
-                        Toast.makeText(context, statusText, Toast.LENGTH_LONG).show()
-                    }
-                }*/
             }
 
             //action on recycler click

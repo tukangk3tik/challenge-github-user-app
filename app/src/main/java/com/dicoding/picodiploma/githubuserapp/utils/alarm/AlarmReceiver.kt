@@ -1,5 +1,6 @@
 package com.dicoding.picodiploma.githubuserapp.utils.alarm
 
+import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -9,7 +10,6 @@ import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
-import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.dicoding.picodiploma.githubuserapp.R
@@ -35,9 +35,7 @@ class AlarmReceiver: BroadcastReceiver() {
         val title = APP_NAME
         val notifId = ID_REPEATING
 
-        //if (message != null) {
-            showAlarmNotification(context, title, message ?: "", notifId)
-        //}
+        showAlarmNotification(context, title, message ?: "", notifId)
     }
 
     private fun showAlarmNotification(context: Context, title: String, message: String, notifId: Int) {
@@ -72,6 +70,7 @@ class AlarmReceiver: BroadcastReceiver() {
         notificationManagerCompat.notify(notifId, notification)
     }
 
+    @SuppressLint("UnspecifiedImmutableFlag")
     fun setRepeatingAlarm(context: Context, type: String, time: String) {
         if (isDateInvalid(time, TIME_FORMAT)) return
 
@@ -93,6 +92,7 @@ class AlarmReceiver: BroadcastReceiver() {
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)
     }
 
+    @SuppressLint("UnspecifiedImmutableFlag")
     fun cancelAlarm(context: Context) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, AlarmReceiver::class.java)
@@ -105,6 +105,7 @@ class AlarmReceiver: BroadcastReceiver() {
         alarmManager.cancel(pendingIntent)
     }
 
+    @SuppressLint("UnspecifiedImmutableFlag")
     fun isAlarmSet(context: Context): Boolean {
         val intent = Intent(context, AlarmReceiver::class.java)
         val requestCode = ID_REPEATING

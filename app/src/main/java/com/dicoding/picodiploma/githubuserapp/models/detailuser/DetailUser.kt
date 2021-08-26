@@ -4,20 +4,20 @@ import com.google.gson.annotations.SerializedName
 
 data class DetailUser (
     @SerializedName("login")
-    var username: String?,
+    var username: String? = null,
 
     @SerializedName("name")
-    var name: String?,
+    var name: String? = null,
 
     @SerializedName("avatar_url")
-    var profileUrl: String?,
+    var profileUrl: String? = null,
 
     @SerializedName("followers")
-    var followers: Int?,
+    var followers: Int? = null,
 
     @SerializedName("following")
-    var following: Int?,
+    var following: Int? = null,
 
     @SerializedName("public_repos")
-    var repos: Int?
+    var repos: Int? = null
 )

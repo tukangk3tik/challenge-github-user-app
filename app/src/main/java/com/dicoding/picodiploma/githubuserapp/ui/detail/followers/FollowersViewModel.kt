@@ -1,38 +1,20 @@
 package com.dicoding.picodiploma.githubuserapp.ui.detail.followers
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dicoding.picodiploma.githubuserapp.models.followers.DataFollowers
-import com.dicoding.picodiploma.githubuserapp.utils.ApiService
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.dicoding.picodiploma.githubuserapp.repositories.UserRepositories
 
-class FollowersViewModel(): ViewModel() {
-    private val listFollowers = MutableLiveData<ArrayList<DataFollowers>> ()
+class FollowersViewModel : ViewModel() {
 
-    fun setListFollowers(params: String, api: ApiService){
-        api.followersUser(params).enqueue(object : Callback<ArrayList<DataFollowers>> {
-            override fun onResponse(
-                call: Call<ArrayList<DataFollowers>>,
-                response: Response<ArrayList<DataFollowers>>
-            ) {
-                if (response.code() == 200) {
-                    listFollowers.postValue(response.body())
-                }
-            }
+    private var userRepository = UserRepositories.getInstance()
+    private val _listFollowers: MutableLiveData<ArrayList<DataFollowers>> = userRepository.getUserFollowers()
 
-            override fun onFailure(call: Call<ArrayList<DataFollowers>>, t: Throwable) {
-                Log.d("test", "onFailure $t")
-                listFollowers.postValue(null)
-            }
-        })
-
+    fun setFollowers(params: String) {
+        userRepository.setFollowers(params)
     }
 
-    fun getListFollowers() : LiveData<ArrayList<DataFollowers>> = listFollowers
-
+    fun getListFollowers(): LiveData<ArrayList<DataFollowers>> = _listFollowers
 }
 

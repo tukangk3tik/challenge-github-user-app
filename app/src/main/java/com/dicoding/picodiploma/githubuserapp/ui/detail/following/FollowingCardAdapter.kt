@@ -1,50 +1,32 @@
 package com.dicoding.picodiploma.githubuserapp.ui.detail.following
 
-import android.content.Intent
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.dicoding.picodiploma.githubuserapp.R
+import com.dicoding.picodiploma.githubuserapp.databinding.ItemFollowersFollowingBinding
 import com.dicoding.picodiploma.githubuserapp.models.following.DataFollowing
-import com.dicoding.picodiploma.githubuserapp.models.userlist.GithubUsers
-import com.dicoding.picodiploma.githubuserapp.ui.detail.DetailUsersActivity
-import kotlinx.android.synthetic.main.item_followers_following.view.*
+import com.dicoding.picodiploma.githubuserapp.ui.detail.FollowingListClickListener
 
-class FollowingCardAdapter(private val mActivity: FragmentActivity?): RecyclerView.Adapter<FollowingCardAdapter.ViewHolder> () {
+class FollowingCardAdapter: RecyclerView.Adapter<FollowingCardAdapter.ViewHolder> () {
+
     private val listFollowing = ArrayList<DataFollowing>()
+    var listener: FollowingListClickListener? = null
 
-    inner class ViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder (private val binding: ItemFollowersFollowingBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(followingList: DataFollowing){
-            with(itemView) {
-                txt_follower_following.text = followingList.username
+            with(binding) {
+                txtFollowerFollowing.text = followingList.username
 
                 Glide.with(itemView.context)
                     .load(followingList.photoProfile)
                     .apply(RequestOptions().override(350,550))
-                    .into(img_following_followers_photo)
+                    .into(imgFollowingFollowersPhoto)
 
                 itemView.setOnClickListener {
-                    //show toast on user click
-                    Toast.makeText(itemView.context, followingList.username, Toast.LENGTH_SHORT).show()
-
-                    if (mActivity != null){
-                        val iDetailUsers = Intent(itemView.context, DetailUsersActivity::class.java)
-                        val usernameFollowing = followingList.username
-                        val photoProfileFollowing = followingList.photoProfile
-
-                        val followingData = GithubUsers(
-                            usernameFollowing,
-                            photoProfileFollowing)
-
-                        iDetailUsers.putExtra(DetailUsersActivity.EXTRA_USERNAME, followingData)
-                        mActivity.finish()
-                        itemView.context.startActivity(iDetailUsers)
-                    }
+                    listener?.onItemClicked(itemView, followingList)
                 }
             }
         }
@@ -54,8 +36,8 @@ class FollowingCardAdapter(private val mActivity: FragmentActivity?): RecyclerVi
         parent: ViewGroup,
         viewType: Int
     ): ViewHolder {
-        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_followers_following, parent, false)
-        return ViewHolder(view)
+        val binding = ItemFollowersFollowingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding)
     }
 
     override fun getItemCount(): Int = listFollowing.size
@@ -64,6 +46,7 @@ class FollowingCardAdapter(private val mActivity: FragmentActivity?): RecyclerVi
         holder.bind(listFollowing[position])
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setData(items: ArrayList<DataFollowing>) {
         listFollowing.clear()
         listFollowing.addAll(items)

@@ -9,6 +9,7 @@
     <ProgressBar
         android:id="@+id/progressBar_followers"
         style="?android:attr/progressBarStyle"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -41,7 +42,7 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/item_github_users" />
+        tools:listitem="@layout/item_followers_following" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

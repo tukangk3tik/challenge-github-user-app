@@ -1,85 +1,75 @@
 package com.dicoding.picodiploma.githubuserapp.ui.detail.following
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-
 import com.dicoding.picodiploma.githubuserapp.R
-import com.dicoding.picodiploma.githubuserapp.utils.ApiService
-import com.dicoding.picodiploma.githubuserapp.utils.RetroInstance
-import kotlinx.android.synthetic.main.fragment_following.*
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
+import com.dicoding.picodiploma.githubuserapp.databinding.FragmentFollowingBinding
+import com.dicoding.picodiploma.githubuserapp.models.IFollowersFollowing
+import com.dicoding.picodiploma.githubuserapp.ui.detail.DetailUsersActivity
+import com.dicoding.picodiploma.githubuserapp.ui.detail.FollowingListClickListener
 
-/**
- * A simple [Fragment] subclass.
- */
-class FollowingFragment(private val query: String) : Fragment() {
-    private lateinit var followingViewModel : FollowingViewModel
+class FollowingFragment(private val query: String) : Fragment(), FollowingListClickListener {
 
-    private val retrofit = RetroInstance.buildRetrofit()
-    private val api = retrofit.create(ApiService::class.java)
-
+    private val followingViewModel: FollowingViewModel by activityViewModels()
+    private var _binding: FragmentFollowingBinding? = null
+    private lateinit var adapter: FollowingCardAdapter
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_following, container, false)
-    }
+    ): View {
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val adapter = FollowingCardAdapter(activity)
-        adapter.notifyDataSetChanged()
+        _binding = FragmentFollowingBinding.inflate(inflater, container, false)
+        val root: View = binding.root
 
-        rv_following.layoutManager = LinearLayoutManager(parentFragment?.context)
-        rv_following.adapter = adapter
+        adapter = FollowingCardAdapter()
+        adapter.listener = this
+        binding.rvFollowing.layoutManager = LinearLayoutManager(root.context)
+        binding.rvFollowing.adapter = adapter
 
-        followingViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(
-            FollowingViewModel::class.java)
-
-        followingViewModel.setListFollowing(query, api)
-        txt_notice_fragment_following.visibility = View.GONE
-
-        followingViewModel.getListFollowing().observe(this, Observer { listFollowing ->
-            rv_following.visibility = View.GONE
-            txt_notice_fragment_following.visibility = View.GONE
-            showLoading(true)
+        followingViewModel.setFollowing(query)
+        followingViewModel.getListFollowing().observe(viewLifecycleOwner, { listFollowing ->
 
             if (listFollowing != null) {
                 adapter.setData(listFollowing)
 
                 if (listFollowing.size == 0) {
-                    txt_notice_fragment_following.text = getString(R.string.dont_following_anyone)
-                    txt_notice_fragment_following.visibility = View.VISIBLE
+                    binding.txtNoticeFragmentFollowing.text = getString(R.string.dont_following_anyone)
+                    binding.txtNoticeFragmentFollowing.visibility = View.VISIBLE
                 } else {
-                    rv_following.visibility = View.VISIBLE
+                    binding.rvFollowing.visibility = View.VISIBLE
+                    binding.txtNoticeFragmentFollowing.visibility = View.GONE
                 }
-                showLoading(false)
             } else {
-                runBlocking {
-                    delay(1500L)
-                    showLoading(false)
-
-                    txt_notice_fragment_following.text = getString(R.string.cant_connect)
-                    txt_notice_fragment_following.visibility = View.VISIBLE
-                }
+                binding.txtNoticeFragmentFollowing.text = getString(R.string.cant_connect)
+                binding.txtNoticeFragmentFollowing.visibility = View.VISIBLE
             }
+
+            showLoading(false)
         })
+        // Inflate the layout for this fragment
+        return root
     }
 
     private fun showLoading(state: Boolean) {
         if (state) {
-            progressBar_following.visibility = View.VISIBLE
+            binding.progressBarFollowing.visibility = View.VISIBLE
         } else {
-            progressBar_following.visibility = View.GONE
+            binding.progressBarFollowing.visibility = View.GONE
         }
+    }
+
+    override fun onItemClicked(view: View, user: IFollowersFollowing) {
+        val iDetailUsers = Intent(activity, DetailUsersActivity::class.java)
+        iDetailUsers.putExtra(DetailUsersActivity.EXTRA_USERNAME, user.username)
+        activity?.startActivity(iDetailUsers)
     }
 
 }

@@ -10,6 +10,8 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2996742671009772" />
         <entry key="app/src/main/res/layout/activity_reminder.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.32864583333333336" />
+        <entry key="app/src/main/res/layout/fragment_followers.xml" value="0.32864583333333336" />
+        <entry key="app/src/main/res/layout/fragment_following.xml" value="0.32864583333333336" />
         <entry key="app/src/main/res/layout/item_favorit.xml" value="0.32864583333333336" />
         <entry key="app/src/main/res/layout/item_followers_following.xml" value="0.32864583333333336" />
         <entry key="app/src/main/res/layout/item_github_users.xml" value="0.32864583333333336" />

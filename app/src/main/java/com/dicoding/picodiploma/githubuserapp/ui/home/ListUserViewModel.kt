@@ -10,7 +10,6 @@ import com.dicoding.picodiploma.githubuserapp.utils.Resource
 import kotlinx.coroutines.launch
 import java.io.IOException
 
-
 class ListUserViewModel : ViewModel() {
 
     private var userRepository = UserRepositories.getInstance()

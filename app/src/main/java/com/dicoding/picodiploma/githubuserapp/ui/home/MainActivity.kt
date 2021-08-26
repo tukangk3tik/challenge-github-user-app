@@ -1,5 +1,6 @@
 package com.dicoding.picodiploma.githubuserapp.ui.home
 
+import android.annotation.SuppressLint
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
@@ -26,7 +27,6 @@ import com.dicoding.picodiploma.githubuserapp.ui.reminder.ReminderActivity
 import com.dicoding.picodiploma.githubuserapp.utils.Resource
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.*
-
 
 class MainActivity : AppCompatActivity(), UserListClickListener {
 
@@ -102,6 +102,7 @@ class MainActivity : AppCompatActivity(), UserListClickListener {
         })
     }
 
+    @SuppressLint("QueryPermissionsNeeded")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.go_to_favorit -> {
