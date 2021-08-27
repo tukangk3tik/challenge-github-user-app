@@ -57,18 +57,15 @@ class DetailUsersActivity : AppCompatActivity(), View.OnClickListener {
         val users: GithubUsers? = intent.getParcelableExtra(EXTRA_USERNAME)
         username = users?.username.toString()
 
+
         detailViewModel.setDetailUser(username)
         detailViewModel.getDetailUser().observe(this, { response ->
-
             when (response) {
                 is Resource.Success -> {
                     with(binding) {
                         response.data?.let {
                             if (it.username == null) {
-                                detailTvUsername.text = null
-                                detailTvName.text = null
-                                detailUserPhoto.setImageDrawable(null)
-                                profileBackground.background = null
+                                resetUserProfile()
                             } else {
                                 detailTvUsername.text = it.username
                                 detailTvName.text = it.name
@@ -93,6 +90,7 @@ class DetailUsersActivity : AppCompatActivity(), View.OnClickListener {
                                         }
                                     })
                             }
+                            showLoading(false)
                         }
                     }
                 }
@@ -101,8 +99,10 @@ class DetailUsersActivity : AppCompatActivity(), View.OnClickListener {
                         Toast.makeText(applicationContext, it, Toast.LENGTH_SHORT).show()
                         resetUserProfile()
                     }
+                    showLoading(false)
                 }
                 is Resource.Loading -> {
+                    showLoading(true)
                     resetUserProfile()
                 }
             }
@@ -117,6 +117,14 @@ class DetailUsersActivity : AppCompatActivity(), View.OnClickListener {
         binding.detailTvRepo.isClickable = true
         binding.detailTvRepo.movementMethod = LinkMovementMethod.getInstance()
         binding.detailTvRepo.setOnClickListener(this)
+    }
+
+    private fun showLoading(state: Boolean) {
+        if (state) {
+            binding.progressBarArea.visibility = View.VISIBLE
+        } else {
+            binding.progressBarArea.visibility = View.GONE
+        }
     }
 
     private fun resetUserProfile() {

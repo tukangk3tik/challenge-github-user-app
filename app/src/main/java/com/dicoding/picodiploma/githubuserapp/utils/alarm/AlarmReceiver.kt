@@ -13,6 +13,7 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.dicoding.picodiploma.githubuserapp.R
+import com.dicoding.picodiploma.githubuserapp.SplashActivity
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -28,29 +29,36 @@ class AlarmReceiver: BroadcastReceiver() {
         private const val TIME_FORMAT = "HH:mm"
     }
 
+    @SuppressLint("UnsafeProtectedBroadcastReceiver")
     override fun onReceive(context: Context, intent: Intent) {
         val message = intent.getStringExtra(EXTRA_MESSAGE)
-        print(message)
 
         val title = APP_NAME
         val notifId = ID_REPEATING
 
-        showAlarmNotification(context, title, message ?: "", notifId)
+        if (message != null) {
+            showAlarmNotification(context, title, message, notifId)
+        }
     }
 
     private fun showAlarmNotification(context: Context, title: String, message: String, notifId: Int) {
         val CHANNEL_ID = "Channel_1"
         val CHANNEL_NAME = "AlarmManager channel"
 
+        val intent = Intent(context, SplashActivity::class.java)
+        val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
+
         val notificationManagerCompat = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
+            .setContentIntent(pendingIntent)
             .setSmallIcon(R.drawable.ic_access_time_black)
             .setContentTitle(title)
             .setContentText(message)
             .setColor(ContextCompat.getColor(context, android.R.color.transparent))
             .setVibrate(longArrayOf(1000, 1000, 1000, 1000, 1000))
             .setSound(alarmSound)
+            .setAutoCancel(true)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
@@ -99,9 +107,7 @@ class AlarmReceiver: BroadcastReceiver() {
         val requestCode = ID_REPEATING
         val pendingIntent = PendingIntent.getBroadcast(context, requestCode, intent, 0)
 
-        print(pendingIntent)
         pendingIntent.cancel()
-
         alarmManager.cancel(pendingIntent)
     }
 

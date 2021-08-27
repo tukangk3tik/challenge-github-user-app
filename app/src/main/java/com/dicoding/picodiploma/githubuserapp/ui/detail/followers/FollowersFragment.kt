@@ -2,6 +2,7 @@ package com.dicoding.picodiploma.githubuserapp.ui.detail.followers
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.picodiploma.githubuserapp.R
 import com.dicoding.picodiploma.githubuserapp.databinding.FragmentFollowersBinding
 import com.dicoding.picodiploma.githubuserapp.models.IFollowersFollowing
+import com.dicoding.picodiploma.githubuserapp.models.userlist.GithubUsers
 import com.dicoding.picodiploma.githubuserapp.ui.detail.DetailUsersActivity
 import com.dicoding.picodiploma.githubuserapp.ui.detail.FollowingListClickListener
 
@@ -65,8 +67,10 @@ class FollowersFragment (private val query: String) : Fragment(), FollowingListC
     }
 
     override fun onItemClicked(view: View, user: IFollowersFollowing) {
+        val dataUser = GithubUsers(user.username, user.photoProfile)
         val iDetailUsers = Intent(activity, DetailUsersActivity::class.java)
-        iDetailUsers.putExtra(DetailUsersActivity.EXTRA_USERNAME, user.username)
+        iDetailUsers.putExtra(DetailUsersActivity.EXTRA_USERNAME, dataUser)
         activity?.startActivity(iDetailUsers)
+        activity?.finish()
     }
 }

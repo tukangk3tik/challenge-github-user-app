@@ -4,5 +4,7 @@ import android.view.View
 import com.dicoding.picodiploma.githubuserapp.models.userlist.GithubUsers
 
 interface UserListClickListener {
-    fun onItemClicked(view: View, user: GithubUsers)
+    fun onDeleteIconClicked(view: View, user: GithubUsers)
+
+    fun onItemClick(view: View, user: GithubUsers)
 }

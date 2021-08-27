@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -21,10 +22,13 @@ import com.dicoding.picodiploma.githubuserapp.R
 import com.dicoding.picodiploma.githubuserapp.databinding.ActivityMainBinding
 import com.dicoding.picodiploma.githubuserapp.db.FavoritEntity
 import com.dicoding.picodiploma.githubuserapp.models.userlist.GithubUsers
+import com.dicoding.picodiploma.githubuserapp.ui.detail.DetailUsersActivity
 import com.dicoding.picodiploma.githubuserapp.ui.favorit.FavoritActivity
 import com.dicoding.picodiploma.githubuserapp.ui.favorit.FavoritViewModel
 import com.dicoding.picodiploma.githubuserapp.ui.reminder.ReminderActivity
 import com.dicoding.picodiploma.githubuserapp.utils.Resource
+import com.dicoding.picodiploma.githubuserapp.utils.alarm.AlarmReceiver
+import com.dicoding.picodiploma.githubuserapp.utils.alarm.AlarmStateManager
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.*
 
@@ -35,6 +39,8 @@ class MainActivity : AppCompatActivity(), UserListClickListener {
     private lateinit var activityMainBinding: ActivityMainBinding
     private val listUserViewModel : ListUserViewModel by viewModels()
     private val favoritViewModel : FavoritViewModel by viewModels()
+    private lateinit var alarmReceiver: AlarmReceiver
+    private lateinit var alarmStateManager: AlarmStateManager
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
@@ -47,6 +53,17 @@ class MainActivity : AppCompatActivity(), UserListClickListener {
 
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
+
+        alarmStateManager = AlarmStateManager(this)
+        alarmReceiver = AlarmReceiver()
+
+        //set default reminder
+        if (!alarmReceiver.isAlarmSet(this)){
+            val time = "09:00"
+            alarmReceiver.cancelAlarm(this)
+            alarmStateManager.setAlarm(time)
+            alarmReceiver.setRepeatingAlarm(this, AlarmReceiver.APP_NAME, time)
+        }
 
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
 
@@ -148,7 +165,7 @@ class MainActivity : AppCompatActivity(), UserListClickListener {
         }
     }
 
-    override fun onItemClicked(view: View, user: GithubUsers) {
+    override fun onDeleteIconClicked(view: View, user: GithubUsers) {
         val newUser = FavoritEntity(user.username, user.photoProfile)
         favoritViewModel.insertFavorit(newUser)
 
@@ -156,6 +173,12 @@ class MainActivity : AppCompatActivity(), UserListClickListener {
             "${user.username} has been added to favorit",
             Toast.LENGTH_SHORT)
             .show()
+    }
+
+    override fun onItemClick(view: View, user: GithubUsers) {
+        val iDetailUsers = Intent(this, DetailUsersActivity::class.java)
+        iDetailUsers.putExtra(DetailUsersActivity.EXTRA_USERNAME, user)
+        startActivity(iDetailUsers)
     }
 
 }

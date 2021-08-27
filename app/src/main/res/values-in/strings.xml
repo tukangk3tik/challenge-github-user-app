@@ -45,4 +45,6 @@
     <string name="turn_off_alarm">Matikan alarm</string>
 
     <string name="alarm_set">Waktu pengingat diaturulang</string>
+
+    <string name="please_wait">Mohon tunggu…</string>
 </resources>

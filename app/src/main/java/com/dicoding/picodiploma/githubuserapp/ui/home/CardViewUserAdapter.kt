@@ -1,17 +1,14 @@
 package com.dicoding.picodiploma.githubuserapp.ui.home
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.dicoding.picodiploma.githubuserapp.R
+import com.dicoding.picodiploma.githubuserapp.databinding.ItemGithubUsersBinding
 import com.dicoding.picodiploma.githubuserapp.models.detailuser.DetailUser
 import com.dicoding.picodiploma.githubuserapp.models.userlist.GithubUsers
-import com.dicoding.picodiploma.githubuserapp.ui.detail.DetailUsersActivity
 import com.dicoding.picodiploma.githubuserapp.utils.ApiService
 import com.dicoding.picodiploma.githubuserapp.utils.RetroInstance
 import kotlinx.android.synthetic.main.item_github_users.view.*
@@ -27,16 +24,16 @@ class CardViewUserAdapter : RecyclerView.Adapter<CardViewUserAdapter.CardViewVie
 
     var listener: UserListClickListener? = null
 
-    inner class CardViewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+    inner class CardViewViewHolder(private val binding: ItemGithubUsersBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(userItems: GithubUsers) {
 
-            with(itemView) {
-                txt_name.text = userItems.username
+            with(binding) {
+                txtName.text = userItems.username
 
                 Glide.with(itemView.context)
                     .load(userItems.photoProfile)
                     .apply(RequestOptions().override(350, 550))
-                    .into(img_users_photo)
+                    .into(imgUsersPhoto)
 
                 //get number of followers and repositories from profile
                 api.profileUserCardView(userItems.username).enqueue(object : Callback<DetailUser> {
@@ -50,26 +47,24 @@ class CardViewUserAdapter : RecyclerView.Adapter<CardViewUserAdapter.CardViewVie
                     ) {
                         if (response.code() == 200) {
                             response.body()?.let {
-                                tv_number_of_followers.text = response.body()?.followers.toString()
-                                tv_number_of_repos.text = response.body()?.repos.toString()
+                                tvNumberOfFollowers.text = response.body()?.followers.toString()
+                                tvNumberOfRepos.text = response.body()?.repos.toString()
                             }
                         } else {
-                            tv_number_of_followers.text = "0"
-                            tv_number_of_repos.text = "0"
+                            tvNumberOfFollowers.text = "0"
+                            tvNumberOfRepos.text = "0"
                         }
                     }
                 })
 
-                star_icon.setOnClickListener {
-                    listener?.onItemClicked(it, userItems)
+                starIcon.setOnClickListener {
+                    listener?.onDeleteIconClicked(it, userItems)
                 }
             }
 
             //action on recycler click
             itemView.setOnClickListener {
-                val iDetailUsers = Intent(itemView.context, DetailUsersActivity::class.java)
-                iDetailUsers.putExtra(DetailUsersActivity.EXTRA_USERNAME, userItems)
-                itemView.context.startActivity(iDetailUsers)
+                listener?.onItemClick(it, userItems)
             }
         }
     }
@@ -78,8 +73,8 @@ class CardViewUserAdapter : RecyclerView.Adapter<CardViewUserAdapter.CardViewVie
         parent: ViewGroup,
         viewType: Int
     ): CardViewViewHolder {
-        val view : View = LayoutInflater.from(parent.context).inflate(R.layout.item_github_users, parent, false)
-        return CardViewViewHolder(view)
+        val binding = ItemGithubUsersBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return CardViewViewHolder(binding)
     }
 
     override fun getItemCount(): Int = listUsers.size

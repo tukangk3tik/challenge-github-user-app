@@ -41,5 +41,6 @@
     <string name="turn_off_alarm">Turn off alarm</string>
 
     <string name="alarm_set">Reminder time set</string>
+    <string name="please_wait">Please wait…</string>
 
 </resources>
